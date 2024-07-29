@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+    <body>
+        <style>
+            .tema {
+                display: inline-grid;
+                width: -webkit-fill-available;
+                font-size: 2vh;
+            }
+
+            .tema input, button {
+                font-size: 3vh;
+                padding: .5vh;
+                box-sizing: border-box;
+            }
+
+            .tema * {
+                margin-top: 0.5vh;
+            }
+
+            .alt, textarea {
+                margin-top: 1vh;
+                width: -webkit-fill-available;
+                height: 50vh;
+            }
+        </style>
+        <div class="tema" >
+
+            <input type="text" data-x="preview" id="preview" placeholder="Preview linki" />
+            <input type="text" data-x="script-open" id="script-open" placeholder="Open source linki" />
+            <input type="text" data-x="script-escrow" id="script-escrow" placeholder="Escrow linki" />
+  
+            <div class="gereksinim">
+                <input type="text" id="gereksinim" placeholder="Gereksinim" />
+                <button id="gbtn">Ekle</button>
+                <div class="gereksinim-list">
+
+                </div>
+            </div>
+
+            <div class="resim">
+                <input type="text" id="resim" placeholder="Resim" />
+                <button  id="rbtn">Ekle</button>
+                <div class="resim-list">
+
+                </div>
+            </div>
+
+            <button id="guncelle">Güncelle</button>
+ 
+        </div>
+
+        <script>
+            $(document).ready(function() {
+ 
+                    gereksinimler =[];
+                    gindex = 0;
+         
+                    $(document).on('click', '#gbtn', function () {
+                         const g = $("#gereksinim").val();
+                         gsinim = {
+                                id: gindex,
+                                value: g
+                         };
+                        gereksinimler.push(gsinim);
+
+                        $(".gereksinim-list").append(`<div class='gid-${gindex}'>${g} <button data-id="${gindex}">Sil</button></div>`);
+
+                        gindex++;
+                    });
+
+                    $(document).on('click', '.gereksinim-list button', function () {
+                        const id = $(this).data('id');
+                        gereksinimler = gereksinimler.filter((item) => item.id !== id);
+                        $(".gid-"+id).remove();
+                    });
+
+                    resimler =[];
+                    rindex = 0;
+
+                    $(document).on('click', '#rbtn', function () {
+                        const r = $("#resim").val();
+                        resim = {
+                            id: rindex,
+                            value: r
+                        };
+                        resimler.push(resim);
+
+                        $(".resim-list").append(`<div class='rid-${rindex}'>${r} <button data-id="${rindex}">Sil</button></div>`);
+
+                        rindex++;
+                    });
+
+                    $(document).on('click', '.resim-list button', function () {
+                        const id = $(this).data('id');
+                        resimler = resimler.filter((item) => item.id !== id);
+                        $(".rid-"+id).remove();
+                    });
+ 
+                    $(document).on('click', '#guncelle', function () {
+                        gsnm = "";
+                        rsmlr = "";
+
+                        gereksinimler.forEach((item) => {
+                            gsnm += `<tr>
+                                        <td style="width:50%;">gereksinim</td>
+                                        <td style="width:50%;">${item.value}</td>
+                                    </tr>`;
+                        });
+ 
+                        resimler.forEach((item) => {
+                            rsmlr += `<tr>
+                                        <td style="width:50%;">img_link</td>
+                                        <td style="width:50%;"><a href="${item.value}">${item.value}</a></td>
+                                    </tr>`;
+                        });
+
+
+table = `<table style="width:100%;">
+    <tbody>
+        <tr>
+            <td style="width:50%;">preview</td>
+            <td style="width:50%;"><a href="${$("#preview").val()}" rel="noreferrer noopener" target="_blank" title="${$("#preview").val()}">${$("#preview").val()}</a></td>
+        </tr>
+        <tr>
+            <td style="width:50%;">script-open</td>
+            <td style="width:50%;">${$("#script-open").val()}</a></td>
+        </tr>
+        <tr>
+            <td style="width:50%;">script-escrow</td>
+            <td style="width:50%;">${$("#script-escrow").val()}</a></td>
+        </tr>
+        ${gsnm}
+        ${rsmlr}
+    </tbody>
+</table>`;
+ 
+                        $("textarea").html(table);
+                    });
+ 
+            });
+        </script>
+ 
+        <div class="alt">
+                <textarea></textarea>
+        </div>
+
+    </body>
+</html>
